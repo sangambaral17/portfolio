@@ -5,6 +5,7 @@ import json
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = 'https://sangambaral.com.np'
+ASSET_VERSION = '20261115-worlds'
 PROJECTS = json.loads((ROOT / 'content/projects.json').read_text(encoding='utf-8'))['projects']
 STORIES = json.loads((ROOT / 'content/stories.json').read_text(encoding='utf-8'))
 PROFILE = json.loads((ROOT / 'content/profile.json').read_text(encoding='utf-8'))
@@ -18,43 +19,50 @@ GITHUB = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path 
 LINKEDIN = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5.3 3a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4ZM3.5 9h3.6v12H3.5V9Zm5.9 0h3.5v1.6h.1c.5-.9 1.6-1.9 3.4-1.9 3.6 0 4.2 2.3 4.2 5.4V21H17v-6.1c0-1.5 0-3.4-2.1-3.4s-2.4 1.6-2.4 3.3V21H9.4V9Z"/></svg>'
 
 
-def header():
+def header(mode='professional'):
+    routes = [('/', 'Overview', 'overview'), ('/professional/', 'Professional', 'professional'), ('/personal/', 'Personal', 'personal')]
+    route_links = ''.join(f'<a class="route-link" href="{url}"' + (' aria-current="page"' if mode == key else '') + f'>{label}</a>' for url, label, key in routes)
     return f'''<header class="site-header" id="top"><div class="wrap header-inner">
 <a class="brand" href="/" aria-label="Sangam Baral — home"><span class="brand-symbol" aria-hidden="true">SB</span><span>Sangam Baral<span class="sr-only"> — home</span></span></a>
 <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" aria-label="Open navigation"><span>MENU</span><span class="menu-icon" aria-hidden="true"></span></button>
-<nav class="site-nav" id="site-navigation" aria-label="Main navigation"><a href="/#work">Work</a><a href="/#about">About</a><a href="/#experience">Experience</a><div class="nav-social"><a href="{PROFILE['linkedin']}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)">{LINKEDIN}</a><a href="{PROFILE['github']}" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)">{GITHUB}</a></div><a class="nav-contact" href="#contact">Let's talk <span aria-hidden="true">↗</span></a></nav></div></header>'''
+<nav class="site-nav" id="site-navigation" aria-label="Main navigation">{route_links}<div class="nav-social"><a href="{PROFILE['linkedin']}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)">{LINKEDIN}</a><a href="{PROFILE['github']}" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)">{GITHUB}</a></div><a class="nav-contact" href="#contact">Let's talk <span aria-hidden="true">↗</span></a></nav></div></header>'''
 
 
-def footer():
-    return f'''<footer class="contact-section" id="contact"><div class="wrap"><div class="contact-top"><span class="eyebrow">HAVE SOMETHING IN MIND?</span><p>A role, a collaboration, or a problem worth solving. I'd love to hear about it.</p></div><div class="contact-heading"><h2>Let's build <em>what's next.</em></h2><a class="contact-arrow" href="mailto:{PROFILE['email']}" aria-label="Email Sangam Baral"><span aria-hidden="true">↗</span></a></div><div class="contact-actions"><div><div class="email-group"><a class="email-link" href="mailto:{PROFILE['email']}">{PROFILE['email']}</a><button class="copy-email" type="button" data-enhancement>Copy email <span aria-hidden="true">⧉</span></button></div><p class="copy-status" role="status" aria-live="polite"></p></div><div class="social-links"><a href="{PROFILE['linkedin']}" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a><a href="{PROFILE['github']}" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a></div></div><div class="footer-bottom"><span class="mono">© 2026 SANGAM BARAL</span><div class="mono"><i class="status-dot" aria-hidden="true"></i> KATHMANDU, NEPAL <span data-local-time>UTC +05:45</span></div><a href="#top" class="mono">BACK TO TOP <span aria-hidden="true">↑</span></a></div></div></footer>'''
+def footer(mode='professional'):
+    heading = "Let's build <em>what's next.</em>" if mode == 'professional' else "Good things <em>start here.</em>"
+    introduction = "A role, a collaboration, or a problem worth solving. I'd love to hear about it." if mode != 'personal' else "A travel story, a game recommendation or a curious idea. Let's start a conversation."
+    return f'''<footer class="contact-section" id="contact"><div class="wrap"><div class="contact-top"><span class="eyebrow">HAVE SOMETHING IN MIND?</span><p>{introduction}</p></div><div class="contact-heading"><h2>{heading}</h2><a class="contact-arrow" href="mailto:{PROFILE['email']}" aria-label="Email Sangam Baral"><span aria-hidden="true">↗</span></a></div><div class="contact-actions"><div><div class="email-group"><a class="email-link" href="mailto:{PROFILE['email']}">{PROFILE['email']}</a><button class="copy-email" type="button" data-enhancement>Copy email <span aria-hidden="true">⧉</span></button></div><p class="copy-status" role="status" aria-live="polite"></p></div><div class="social-links"><a href="{PROFILE['linkedin']}" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a><a href="{PROFILE['github']}" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a><button type="button" class="share-page" data-enhancement>Copy page link <span aria-hidden="true">↗</span></button></div></div><p class="share-status mono" role="status" aria-live="polite"></p><div class="footer-bottom"><span class="mono">© 2026 SANGAM BARAL</span><div class="mono"><i class="status-dot" aria-hidden="true"></i> KATHMANDU, NEPAL <span data-local-time>UTC +05:45</span></div><a href="#top" class="mono">BACK TO TOP <span aria-hidden="true">↑</span></a></div></div></footer>'''
 
 
-def head(title, description, path='/'):
+def head(title, description, path='/', social_image='social-card.png'):
     structured = {'@context': 'https://schema.org', '@type': 'Person', 'name': PROFILE['name'], 'jobTitle': PROFILE['role'], 'url': BASE + '/', 'sameAs': [PROFILE['linkedin'], PROFILE['github']]}
+    theme = '#f4eee5' if path == '/personal/' else '#f6f5f0'
     return f'''<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(description)}">
-<meta name="theme-color" content="#f6f5f0">
+<meta name="theme-color" content="{theme}">
 <meta name="color-scheme" content="light">
 <link rel="canonical" href="{BASE}{path}">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
-<link rel="stylesheet" href="/assets/styles.css">
+<link rel="stylesheet" href="/assets/styles.css?v={ASSET_VERSION}">
+<link rel="stylesheet" href="/assets/worlds.css?v={ASSET_VERSION}">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Sangam Baral">
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(description)}">
 <meta property="og:url" content="{BASE}{path}">
-<meta property="og:image" content="{BASE}/assets/social-card.png">
+<meta property="og:image" content="{BASE}/assets/{social_image}?v={ASSET_VERSION}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Sangam Baral — Thoughtful software. Real-world purpose.">
+<meta property="og:image:alt" content="{esc(title)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{esc(title)}">
 <meta name="twitter:description" content="{esc(description)}">
-<meta name="twitter:image" content="{BASE}/assets/social-card.png">
+<meta name="twitter:image" content="{BASE}/assets/{social_image}?v={ASSET_VERSION}">
 <script type="application/ld+json">{json.dumps(structured, ensure_ascii=False)}</script>'''
 
 
@@ -157,6 +165,8 @@ def make_covers():
 def build():
     (ROOT / 'assets').mkdir(exist_ok=True)
     (ROOT / 'projects').mkdir(exist_ok=True)
+    (ROOT / 'professional').mkdir(exist_ok=True)
+    (ROOT / 'personal').mkdir(exist_ok=True)
     (ROOT / 'assets/system.svg').write_text(make_system(), encoding='utf-8')
     make_covers()
     (ROOT / 'assets/favicon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="8" fill="#18211e"/><text x="8" y="43" fill="#f6f5f0" font-family="Arial,sans-serif" font-size="34" font-weight="bold" letter-spacing="-4">SB</text><circle cx="54" cy="10" r="7" fill="#6282ef"/></svg>', encoding='utf-8')
@@ -173,9 +183,15 @@ def build():
     experience = []
     for index, item in enumerate(PROFILE['experience']):
         experience.append(f'''<article class="experience-item"><span class="mono">{esc(item['period'])}</span><details{' open' if index == 0 else ''}><summary><div><h3>{esc(item['role'])}</h3><p class="company">{esc(item['company'])} · {esc(item['location'])}</p></div></summary><p>{esc(item['description'])}</p></details></article>''')
-    template = (ROOT / 'templates/index.html').read_text(encoding='utf-8')
-    index = render(template, {'HEAD': head('Sangam Baral — Software & Product Engineer', 'Thoughtful software. Real-world purpose. Explore Sangam Baral’s work in product engineering, automation, business software and AI, from Kathmandu, Nepal.'), 'HEADER': header(), 'FOOTER': footer(), 'FEATURED': '\n'.join(featured), 'MORE': '\n'.join(more), 'EXPERIENCE': '\n'.join(experience)})
-    (ROOT / 'index.html').write_text(index, encoding='utf-8')
+    template = (ROOT / 'templates/professional.html').read_text(encoding='utf-8')
+    professional = render(template, {'HEAD': head('Sangam Baral — Software & Product Engineer', 'Good ideas. Built properly. Explore Sangam Baral’s engineering experience, selected software projects and work in automation, business products and AI.', '/professional/', 'professional-social.png'), 'HEADER': header('professional'), 'FOOTER': footer('professional'), 'FEATURED': '\n'.join(featured), 'MORE': '\n'.join(more), 'EXPERIENCE': '\n'.join(experience)})
+    (ROOT / 'professional/index.html').write_text(professional, encoding='utf-8')
+    template = (ROOT / 'templates/overview.html').read_text(encoding='utf-8')
+    overview = render(template, {'HEAD': head('Sangam Baral — Engineer, Builder & Curious Human', 'Meet Sangam Baral, a software and product engineer from Nepal. Explore his professional work and his personal interests in travel, gaming, AI and nature filmmaking.'), 'HEADER': header('overview'), 'FOOTER': footer('overview')})
+    (ROOT / 'index.html').write_text(overview, encoding='utf-8')
+    template = (ROOT / 'templates/personal.html').read_text(encoding='utf-8')
+    personal = render(template, {'HEAD': head('Sangam Baral — Curious, by Nature', 'The personal side of Sangam Baral: travel, video games, exploring AI and technology, and capturing the natural world through a lens.', '/personal/', 'personal-social.png'), 'HEADER': header('personal'), 'FOOTER': footer('personal')})
+    (ROOT / 'personal/index.html').write_text(personal, encoding='utf-8')
     template = (ROOT / 'templates/project.html').read_text(encoding='utf-8')
     for i, p in enumerate(PROJECTS):
         s = STORIES[p['id']]
@@ -184,10 +200,10 @@ def build():
         next_project = PROJECTS[(i+1) % len(PROJECTS)]
         values.update({'HEAD': head(f'{p["name"]} — Sangam Baral', p['summary'], f'/projects/{p["id"]}.html'), 'HEADER': header(), 'FOOTER': footer(), 'ID': p['id'], 'NAME': esc(p['name']), 'CATEGORY': esc(p['category']), 'STATUS': esc(p['status']), 'STACK': ' / '.join(esc(t) for t in p['stack']), 'SOURCE_ACTION': source_action, 'ILLUSTRATION_ALT': esc(f'Original concept illustration for {p["name"]}; no real customer or internal records.'), 'DETAILS': ''.join(f'<li>{esc(t)}</li>' for t in s['details']), 'NEXT_ID': next_project['id'], 'NEXT_NAME': esc(next_project['name'])})
         (ROOT / f'projects/{p["id"]}.html').write_text(render(template, values), encoding='utf-8')
-    urls = [BASE + '/'] + [f'{BASE}/projects/{p["id"]}.html' for p in PROJECTS]
+    urls = [BASE + '/', BASE + '/professional/', BASE + '/personal/'] + [f'{BASE}/projects/{p["id"]}.html' for p in PROJECTS]
     sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + '\n'.join(f'  <url><loc>{url}</loc><lastmod>2026-11-15</lastmod></url>' for url in urls) + '\n</urlset>\n'
     (ROOT / 'sitemap.xml').write_text(sitemap, encoding='utf-8')
-    print(f'Built homepage, {len(PROJECTS)} project pages, sitemap and 9 original SVG assets.')
+    print(f'Built overview, professional and personal routes, {len(PROJECTS)} project pages and sitemap.')
 
 
 if __name__ == '__main__':
