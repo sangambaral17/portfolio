@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://sangambaral.com.np/sitemap.xml

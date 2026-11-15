@@ -1,0 +1,16 @@
+{
+  "name": "Sangam Baral",
+  "role": "Software & Product Engineer",
+  "location": "Kathmandu, Nepal",
+  "email": "sangambaral9@gmail.com",
+  "github": "https://github.com/sangambaral17",
+  "linkedin": "https://www.linkedin.com/in/sangambaral17/",
+  "experience": [
+    {"period": "Apr 2026 — Present", "role": "Software & Product Engineer", "company": "ShadowFlux Technology", "location": "Kathmandu, Nepal", "description": "Building automation software for hydropower and solar operations, with contributions to early datacenter systems. Working across requirements, product decisions and engineering delivery."},
+    {"period": "Apr 2026 — Present", "role": "Freelance AI Engineer", "company": "Narrative Ads", "location": "Remote", "description": "Translating creative briefs into AI-assisted imagery, storyboards and short-form video through prompt development and iterative production."},
+    {"period": "Sep 2025 — Mar 2026", "role": "Independent Software Consultant", "company": "Business software & ERP", "location": "Nepal & international clients", "description": "Designing and developing inventory, billing and business-management software, from data models through desktop and web interfaces."},
+    {"period": "Nov 2022 — Sep 2025", "role": "Senior Associate Software Engineer", "company": "Light & Wonder", "location": "Bengaluru, India", "description": "C#/.NET game-server engineering, Unity interface components and SQL optimization. Promoted from Associate; contributed to design reviews, mentoring and Agile delivery."},
+    {"period": "Jan 2022 — Apr 2022", "role": "Software Engineer Intern", "company": "Engineering internship", "location": "Remote", "description": "Front-end implementation and UI/UX work using HTML, CSS and JavaScript in a collaborative Git workflow."}
+  ],
+  "education": {"degree": "B.E. in Information Science Engineering", "school": "Cambridge Institute of Technology · VTU", "period": "2018 — 2022", "location": "Bengaluru, India"}
+}
