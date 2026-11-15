@@ -74,3 +74,31 @@ if (timeElement) {
   updateTime();
   setInterval(updateTime, 60000);
 }
+
+const quietButton = document.querySelector('.cinema-button');
+if (quietButton) {
+  quietButton.addEventListener('click', () => {
+    const quiet = quietButton.getAttribute('aria-pressed') !== 'true';
+    quietButton.setAttribute('aria-pressed', String(quiet));
+    quietButton.closest('.cinema-frame').classList.toggle('is-quiet', quiet);
+    quietButton.replaceChildren(document.createTextNode(quiet ? 'Leave quiet view ' : 'Enter quiet view '));
+    const icon = document.createElement('span');
+    icon.setAttribute('aria-hidden', 'true');
+    icon.textContent = quiet ? '↙' : '⤢';
+    quietButton.append(icon);
+  });
+}
+
+const shareButton = document.querySelector('.share-page');
+const shareStatus = document.querySelector('.share-status');
+if (shareButton && shareStatus) {
+  shareButton.addEventListener('click', async () => {
+    const pageUrl = document.querySelector('link[rel="canonical"]').href;
+    try {
+      await navigator.clipboard.writeText(pageUrl);
+      shareStatus.textContent = 'Page link copied. Thanks for sharing.';
+    } catch {
+      shareStatus.textContent = pageUrl;
+    }
+  });
+}

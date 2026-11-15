@@ -21,6 +21,7 @@ class Page(HTMLParser):
         self.description = False
         self.title = False
         self.og = False
+        self.active_routes = []
 
     def handle_starttag(self, tag, attributes):
         attrs = dict(attributes)
@@ -33,6 +34,8 @@ class Page(HTMLParser):
         if tag == 'meta':
             self.description = self.description or (attrs.get('name') == 'description' and bool(attrs.get('content')))
             self.og = self.og or attrs.get('property') == 'og:image'
+            if attrs.get('property') == 'og:image':
+                self.refs.append(attrs.get('content', '').removeprefix('https://sangambaral.com.np'))
         if tag == 'link' and attrs.get('rel') == 'canonical':
             self.canonical = attrs.get('href', '').startswith('https://sangambaral.com.np/')
         if tag == 'img':
@@ -41,6 +44,8 @@ class Page(HTMLParser):
         if tag == 'a' and attrs.get('target') == '_blank':
             if 'noopener' not in attrs.get('rel', ''):
                 errors.append(f'{self.path}: external window lacks noopener')
+        if tag == 'a' and 'route-link' in attrs.get('class', '') and attrs.get('aria-current') == 'page':
+            self.active_routes.append(attrs.get('href'))
         for attr in ('src', 'href'):
             if attrs.get(attr):
                 self.refs.append(attrs[attr])
@@ -56,8 +61,8 @@ for project in projects:
         assert not project['sourceUrl'] and not project['demoUrl'], 'Private project has an unreviewed public destination'
 assert (ROOT / 'CNAME').read_text().strip() == 'sangambaral.com.np', 'Custom domain changed'
 
-paths = [ROOT / 'index.html'] + sorted((ROOT / 'projects').glob('*.html'))
-assert len(paths) == 8, 'Expected homepage and seven stories'
+paths = [ROOT / 'index.html', ROOT / 'professional/index.html', ROOT / 'personal/index.html'] + sorted((ROOT / 'projects').glob('*.html'))
+assert len(paths) == 10, 'Expected three identity routes and seven stories'
 pages = {}
 for path in paths:
     source = path.read_text(encoding='utf-8')
@@ -66,6 +71,11 @@ for path in paths:
     pages[path.resolve()] = page
     if page.h1 != 1 or not all([page.title, page.description, page.canonical, page.og]):
         errors.append(f'{page.path}: incomplete headings or discovery metadata')
+    expected_route = '/' if path == ROOT / 'index.html' else '/personal/' if path == ROOT / 'personal/index.html' else '/professional/'
+    if page.active_routes != [expected_route]:
+        errors.append(f'{page.path}: wrong current navigation route')
+    if path.parent.name == 'projects' and 'href="/professional/#work"' not in source:
+        errors.append(f'{page.path}: project backlink does not lead to professional work')
     if '@@' in source or 'pre-entry' in source or 'cdn.jsdelivr.net/three' in source:
         errors.append(f'{page.path}: unresolved template or legacy entry gate')
     for ld in re.findall(r'<script type="application/ld\+json">(.*?)</script>', source, re.S):

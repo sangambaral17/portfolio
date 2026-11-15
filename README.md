@@ -25,8 +25,14 @@ Open `http://127.0.0.1:4173`.
 
 Run the build after content/template changes and commit the generated files with
 the source. Root `index.html` is the GitHub Pages entry point. Preserve `CNAME`.
-The committed PNG sharing card can be regenerated on Windows with
-`powershell -File scripts/build-social.ps1`.
+The three PNG sharing cards can be regenerated on Windows with
+`powershell -File scripts/social-previews.ps1`.
+
+The homepage introduces both sides of Sangam. `/professional/` contains selected
+work, engineering experience and approach; `/personal/` presents owner-supplied
+interests in travel, gaming, AI and nature filmmaking. Cross-page navigation uses
+real directory routes compatible with GitHub Pages. Existing project URLs remain
+available, with backlinks leading to the professional collection.
 
 Project visuals are original **concept illustrations**, not product screenshots.
 They contain no customer, traveler, health or plant records. Private projects have
