@@ -1,0 +1,4 @@
+__pycache__/
+.preview/
+*.pyc
+docs/PHASE_1_RESEARCH.md

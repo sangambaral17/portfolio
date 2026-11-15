@@ -1,0 +1,86 @@
+{
+  "powerveyra": {
+    "group": "automation",
+    "eyebrow": "REPORTS INTO UNDERSTANDING",
+    "headline": "Clarity for complex energy data.",
+    "contribution": "Software engineering & product development",
+    "intro": "PowerVeyra brings structure to power-plant reporting: importing records, retaining their origins, and making historical measurements easier to inspect and understand.",
+    "problem": "Operational reports can be difficult to reconcile, explore and explain when their readings are spread across files. An attractive chart is only useful when its underlying source can be understood.",
+    "approach": "A local reporting application connects retained report files to structured readings and bilingual visualizations. Data-quality and source checks make uncertainty visible alongside the information itself.",
+    "details": ["Persistent report imports with source traceability.", "Historical chart exploration and bilingual explanations.", "Review workflows for report revisions and archive integrity.", "A telemetry receiving contract developed separately from historical reporting."],
+    "boundary": "A private application in development. Historical analytics and a receiving API do not establish a commissioned live SCADA connection, equipment control or certified sensor accuracy.",
+    "takeaway": "Trust belongs in the data model, not just in the dashboard."
+  },
+  "walsong-fit": {
+    "group": "product",
+    "eyebrow": "LESS FRICTION. MORE CONSISTENCY.",
+    "headline": "A calmer way to track progress.",
+    "contribution": "Product development & full-stack engineering",
+    "intro": "Walsong Fit brings training, nutrition, recovery and everyday progress into a phone-first personal performance application.",
+    "problem": "Personal tracking becomes a chore when everyday records live in separate places. The product explores a clearer connection between the actions someone records and the progress they can understand.",
+    "approach": "A responsive web application combines workout and nutrition workflows with owner-scoped records and shared domain calculations. An early native client extends the product in deliberate, testable slices.",
+    "details": ["Workout plans, sets, rest timers and training history.", "Manual nutrition, reusable meals, hydration and recovery records.", "Progress views, data exports and offline workout-set drafts.", "Early native development with shared models and selected testing workflows."],
+    "boundary": "A private pre-release with web and early native development. A full native release, wearable integration and AI food analysis are not claimed as available features.",
+    "takeaway": "Useful tracking starts with records people can understand and control."
+  },
+  "batolekha": {
+    "group": "product",
+    "eyebrow": "BUILT AROUND THE JOURNEY",
+    "headline": "Local context. Thoughtful journeys.",
+    "contribution": "Product development & full-stack engineering",
+    "intro": "BatoLekha is a Nepal-focused tourism platform exploring two connected needs: useful traveler discovery and structured trip operations for trekking and adventure agencies.",
+    "problem": "Travel ideas and agency operations need different kinds of information. Combining them responsibly requires clear boundaries between public editorial content and protected business records.",
+    "approach": "The traveler experience supports destination discovery and temporary planning. A separate protected workspace organizes agency trip records, with source-aware content and explicit distinctions between ideas and verified information.",
+    "details": ["Destination discovery with search, area and travel-style filters.", "Temporary trip planning and source-aware journey information.", "Protected agency workspaces and trip lifecycle records.", "Responsive web foundations and an early mobile source prototype."],
+    "boundary": "In development. Discovery and planning do not imply live bookings, payment processing, verified trail navigation or a released native application.",
+    "takeaway": "A good travel product is clear about what it knows—and what it does not."
+  },
+  "abroadmitra": {
+    "group": "product",
+    "eyebrow": "MAKE THE NEXT STEP CLEARER",
+    "headline": "Better context for a big decision.",
+    "contribution": "Lead development & product engineering",
+    "intro": "AbroadMitra helps students explore universities and study-abroad options through organized information and explainable recommendations.",
+    "problem": "Comparing study options means balancing location, budget, academic background and course interests. A useful recommendation should make its reasons visible.",
+    "approach": "A React interface works with a layered .NET API and a structured data model. The reviewed recommendation service filters candidates and scores explicit criteria, returning reasons alongside the results.",
+    "details": ["University and course discovery backed by a structured API.", "Budget and destination filtering before recommendation scoring.", "Weighted matching with explanations for individual results.", "Recommendation-service tests covering filtering and scoring behavior."],
+    "boundary": "An implemented software project. The reviewed recommendation engine is rule-based; matches are decision support, not admission predictions or guarantees. A current public demo is not verified.",
+    "takeaway": "Recommendations earn trust when their reasoning is visible."
+  },
+  "nepalkhata": {
+    "group": "product",
+    "eyebrow": "EVERYDAY BUSINESS, BETTER ORGANIZED",
+    "headline": "Practical software for the shop floor.",
+    "contribution": "Desktop application engineering",
+    "intro": "NepalKhata is a desktop hardware-shop management project for inventory, invoicing, customers and suppliers, with optional AI-assisted product search.",
+    "problem": "Shop software needs to make stock and billing reliable without making basic operations depend on an internet connection.",
+    "approach": "A .NET/WPF application separates interface, business concerns and SQLite data access. The reviewed invoice flow uses a transaction to record invoice items and update stock together.",
+    "details": ["Inventory, customer and supplier management.", "Invoice and stock updates within a database transaction.", "Local SQLite storage with a Dapper data layer.", "Optional Claude-powered search and an MVVM desktop interface."],
+    "boundary": "Implementation is present in the public repository. This portfolio does not establish customer adoption, current production deployment or independent billing-compliance certification.",
+    "takeaway": "The best business tools fit the conditions where the business actually runs."
+  },
+  "jwelflow": {
+    "group": "product",
+    "eyebrow": "PRECISION MEETS LOCAL CONTEXT",
+    "headline": "Software that understands the trade.",
+    "contribution": "Product development & application engineering",
+    "intro": "Walsong JwelFlow explores the specific workflows of jewelry retailers in Nepal, from inventory and billing to artisan work and local weight calculations.",
+    "problem": "Jewelry retail has domain details that general inventory software can miss: traditional weight units, material rates, making charges and specialist workflows.",
+    "approach": "A Next.js application and Tauri desktop wrapper use local RxDB storage. A dedicated calculation module handles weight conversion and decimal-based price arithmetic.",
+    "details": ["Jewelry inventory and point-of-sale interfaces.", "Tola, masha and lal conversion with decimal arithmetic.", "Artisan-work and customer workflow modules.", "Local database collections and schema-migration code."],
+    "boundary": "An implemented project requiring further release validation. No claim of certified legal compliance, encrypted backup or guaranteed data-loss prevention is made.",
+    "takeaway": "Domain understanding is an engineering feature."
+  },
+  "documind": {
+    "group": "ai",
+    "eyebrow": "ANSWERS WITH A WAY BACK TO THE SOURCE",
+    "headline": "Look inside the answer.",
+    "contribution": "AI pipeline & backend engineering",
+    "intro": "DocuMind is a document-question-answering API prototype that combines local embeddings, vector retrieval and language-model generation with source attribution.",
+    "problem": "A document answer is hard to evaluate without seeing the passages that informed it. The prototype makes retrieval evidence part of the response.",
+    "approach": "FastAPI coordinates PDF parsing, overlapping text chunks, local sentence embeddings and a FAISS index. Retrieved passages form the prompt context, and the response includes source pages and similarity scores.",
+    "details": ["PDF upload, parsing and overlapping text chunks.", "Local embeddings and normalized-vector similarity retrieval.", "Groq-backed answer generation from retrieved context.", "Source passages and page references returned through the API."],
+    "boundary": "An API prototype. The reviewed implementation is not a production multi-user document service; the larger UI, routing and agent roadmap is separate from the available code.",
+    "takeaway": "Source attribution is part of the experience, not an afterthought."
+  }
+}
