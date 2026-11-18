@@ -16,6 +16,7 @@ python -m http.server 4173 --bind 127.0.0.1
 Open `http://127.0.0.1:4173`.
 
 - `content/profile.json`: profile, professional links and experience.
+- `content/apps.json`: reviewed app directory, access status and launch links.
 - `content/projects.json`: curated selection, project order, stacks and source links.
 - `content/stories.json`: case-study copy and implementation boundaries.
 - `templates/`: homepage and project-page HTML templates.
@@ -33,6 +34,13 @@ work, engineering experience and approach; `/personal/` presents owner-supplied
 interests in travel, gaming, AI and nature filmmaking. Cross-page navigation uses
 real directory routes compatible with GitHub Pages. Existing project URLs remain
 available, with backlinks leading to the professional collection.
+
+`/apps/` is the curated app directory, generated from `content/apps.json` and
+`templates/apps.html`. It distinguishes verified live apps (which may still
+require an account) from projects that are not available as hosted services.
+Keep individual applications deployed independently; GitHub Pages is a static
+portfolio host, not a reverse proxy for Next.js apps. `assets/apps.js`
+progressively enhances the directory with search and category filters.
 
 Project visuals are original **concept illustrations**, not product screenshots.
 They contain no customer, traveler, health or plant records. Private projects have
