@@ -5,10 +5,11 @@ import json
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = 'https://sangambaral.com.np'
-ASSET_VERSION = '20261115-worlds'
+ASSET_VERSION = '20261118-apps'
 PROJECTS = json.loads((ROOT / 'content/projects.json').read_text(encoding='utf-8'))['projects']
 STORIES = json.loads((ROOT / 'content/stories.json').read_text(encoding='utf-8'))
 PROFILE = json.loads((ROOT / 'content/profile.json').read_text(encoding='utf-8'))
+APPS = json.loads((ROOT / 'content/apps.json').read_text(encoding='utf-8'))['apps']
 
 
 def esc(value):
@@ -20,7 +21,7 @@ LINKEDIN = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><pat
 
 
 def header(mode='professional'):
-    routes = [('/', 'Overview', 'overview'), ('/professional/', 'Professional', 'professional'), ('/personal/', 'Personal', 'personal')]
+    routes = [('/', 'Overview', 'overview'), ('/professional/', 'Professional', 'professional'), ('/personal/', 'Personal', 'personal'), ('/apps/', 'Apps', 'apps')]
     route_links = ''.join(f'<a class="route-link" href="{url}"' + (' aria-current="page"' if mode == key else '') + f'>{label}</a>' for url, label, key in routes)
     return f'''<header class="site-header" id="top"><div class="wrap header-inner">
 <a class="brand" href="/" aria-label="Sangam Baral — home"><span class="brand-symbol" aria-hidden="true">SB</span><span>Sangam Baral<span class="sr-only"> — home</span></span></a>
@@ -50,6 +51,7 @@ def head(title, description, path='/', social_image='social-card.png'):
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
 <link rel="stylesheet" href="/assets/styles.css?v={ASSET_VERSION}">
 <link rel="stylesheet" href="/assets/worlds.css?v={ASSET_VERSION}">
+<link rel="stylesheet" href="/assets/apps.css?v={ASSET_VERSION}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Sangam Baral">
 <meta property="og:title" content="{esc(title)}">
@@ -162,11 +164,26 @@ def make_covers():
         (assets / f'{identifier}.svg').write_text(svg_canvas(s, color), encoding='utf-8')
 
 
+
+def app_cards():
+    cards = []
+    for p in APPS:
+        featured = ' is-featured' if p['kind'] == 'live' else ''
+        launch = (f'<a class="app-launch" href="{esc(p["launchUrl"])}" target="_blank" rel="noopener noreferrer">Open app <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>' if p['launchUrl'] else '')
+        cards.append(f'''<article class="app-tile{featured}" data-app-category="{esc(p['category'])}">
+<div class="app-tile-visual"><img src="/assets/{esc(p['image'])}" width="1000" height="650" alt="Original concept illustration for {esc(p['name'])}; not a product screenshot." loading="lazy"></div>
+<div class="app-tile-copy"><div class="app-tile-top"><span class="eyebrow">{esc(p['eyebrow'])}</span><span class="app-status">{esc(p['status'])}</span></div>
+<h3>{esc(p['name'])}</h3><p class="app-tile-summary">{esc(p['summary'])}</p><p class="app-tile-note">{esc(p['note'])}</p>
+<div class="app-tile-actions">{launch}<a href="/apps/{esc(p['id'])}/">View details <span aria-hidden="true">↗</span></a></div></div></article>''')
+    return '\n'.join(cards)
+
+
 def build():
     (ROOT / 'assets').mkdir(exist_ok=True)
     (ROOT / 'projects').mkdir(exist_ok=True)
     (ROOT / 'professional').mkdir(exist_ok=True)
     (ROOT / 'personal').mkdir(exist_ok=True)
+    (ROOT / 'apps').mkdir(exist_ok=True)
     (ROOT / 'assets/system.svg').write_text(make_system(), encoding='utf-8')
     make_covers()
     (ROOT / 'assets/favicon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="8" fill="#18211e"/><text x="8" y="43" fill="#f6f5f0" font-family="Arial,sans-serif" font-size="34" font-weight="bold" letter-spacing="-4">SB</text><circle cx="54" cy="10" r="7" fill="#6282ef"/></svg>', encoding='utf-8')
@@ -192,6 +209,16 @@ def build():
     template = (ROOT / 'templates/personal.html').read_text(encoding='utf-8')
     personal = render(template, {'HEAD': head('Sangam Baral — Curious, by Nature', 'The personal side of Sangam Baral: travel, video games, exploring AI and technology, and capturing the natural world through a lens.', '/personal/', 'personal-social.png'), 'HEADER': header('personal'), 'FOOTER': footer('personal')})
     (ROOT / 'personal/index.html').write_text(personal, encoding='utf-8')
+    template = (ROOT / 'templates/apps.html').read_text(encoding='utf-8')
+    apps_page = render(template, {'HEAD': head('Apps & Tools — Sangam Baral', 'Explore Walsong Fit and an evolving collection of thoughtfully built apps, experiments and products by Sangam Baral.', '/apps/'), 'HEADER': header('apps'), 'FOOTER': footer(), 'APP_CARDS': app_cards()})
+    (ROOT / 'apps/index.html').write_text(apps_page, encoding='utf-8')
+    template = (ROOT / 'templates/app.html').read_text(encoding='utf-8')
+    for app in APPS:
+        slug = app['id']
+        (ROOT / 'apps' / slug).mkdir(parents=True, exist_ok=True)
+        launch_action = (f'<a class="button button-dark" href="{esc(app["launchUrl"])}" target="_blank" rel="noopener noreferrer">Open application <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>' if app['launchUrl'] else '')
+        values = {'HEAD': head(f'{app["name"]} — Apps — Sangam Baral', app['summary'], f'/apps/{slug}/'), 'HEADER': header('apps'), 'FOOTER': footer(), 'ID': esc(slug), 'EYEBROW': esc(app['eyebrow']), 'NAME': esc(app['name']), 'STATUS': esc(app['status']), 'SUMMARY': esc(app['summary']), 'NOTE': esc(app['note']), 'IMAGE': esc(app['image']), 'PROJECT_URL': esc(app['projectUrl']), 'LAUNCH_ACTION': launch_action}
+        (ROOT / 'apps' / slug / 'index.html').write_text(render(template, values), encoding='utf-8')
     template = (ROOT / 'templates/project.html').read_text(encoding='utf-8')
     for i, p in enumerate(PROJECTS):
         s = STORIES[p['id']]
@@ -200,10 +227,10 @@ def build():
         next_project = PROJECTS[(i+1) % len(PROJECTS)]
         values.update({'HEAD': head(f'{p["name"]} — Sangam Baral', p['summary'], f'/projects/{p["id"]}.html'), 'HEADER': header(), 'FOOTER': footer(), 'ID': p['id'], 'NAME': esc(p['name']), 'CATEGORY': esc(p['category']), 'STATUS': esc(p['status']), 'STACK': ' / '.join(esc(t) for t in p['stack']), 'SOURCE_ACTION': source_action, 'ILLUSTRATION_ALT': esc(f'Original concept illustration for {p["name"]}; no real customer or internal records.'), 'DETAILS': ''.join(f'<li>{esc(t)}</li>' for t in s['details']), 'NEXT_ID': next_project['id'], 'NEXT_NAME': esc(next_project['name'])})
         (ROOT / f'projects/{p["id"]}.html').write_text(render(template, values), encoding='utf-8')
-    urls = [BASE + '/', BASE + '/professional/', BASE + '/personal/'] + [f'{BASE}/projects/{p["id"]}.html' for p in PROJECTS]
-    sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + '\n'.join(f'  <url><loc>{url}</loc><lastmod>2026-11-15</lastmod></url>' for url in urls) + '\n</urlset>\n'
+    urls = [BASE + '/', BASE + '/professional/', BASE + '/personal/', BASE + '/apps/'] + [f'{BASE}/apps/{app["id"]}/' for app in APPS] + [f'{BASE}/projects/{p["id"]}.html' for p in PROJECTS]
+    sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + '\n'.join(f'  <url><loc>{url}</loc><lastmod>2026-11-18</lastmod></url>' for url in urls) + '\n</urlset>\n'
     (ROOT / 'sitemap.xml').write_text(sitemap, encoding='utf-8')
-    print(f'Built overview, professional and personal routes, {len(PROJECTS)} project pages and sitemap.')
+    print(f'Built overview, professional, personal and apps routes, {len(PROJECTS)} project pages and sitemap.')
 
 
 if __name__ == '__main__':

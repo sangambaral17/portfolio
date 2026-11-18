@@ -1,0 +1,85 @@
+{
+  "reviewedOn": "2026-11-18",
+  "publicationState": "curated",
+  "principle": "Only verified public destinations are advertised as live; listing does not imply public signup.",
+  "apps": [
+    {
+      "id": "walsong-fit",
+      "name": "Walsong Fit",
+      "eyebrow": "PERSONAL PERFORMANCE",
+      "category": "lifestyle",
+      "summary": "A focused training companion for guided workouts, routines, progress and recovery.",
+      "status": "Live · account required",
+      "kind": "live",
+      "image": "walsong-fit.svg",
+      "launchUrl": "https://walsong-personal-trainer.vercel.app/",
+      "projectUrl": "/projects/walsong-fit.html",
+      "note": "Early access. Sign-in is required and public registration may be unavailable."
+    },
+    {
+      "id": "batolekha",
+      "name": "BatoLekha",
+      "eyebrow": "TRAVEL & DISCOVERY",
+      "category": "lifestyle",
+      "summary": "A Nepal-first travel notebook and emerging operations platform for people exploring the country.",
+      "status": "In development",
+      "kind": "project",
+      "image": "batolekha.svg",
+      "launchUrl": null,
+      "projectUrl": "/projects/batolekha.html",
+      "note": "Public app access is not available yet."
+    },
+    {
+      "id": "abroadmitra",
+      "name": "AbroadMitra",
+      "eyebrow": "EDUCATION",
+      "category": "lifestyle",
+      "summary": "Explore study-abroad options through structured university discovery and recommendations.",
+      "status": "Project available",
+      "kind": "project",
+      "image": "abroadmitra.svg",
+      "launchUrl": null,
+      "projectUrl": "/projects/abroadmitra.html",
+      "note": "Explore the project; no public hosted app is confirmed."
+    },
+    {
+      "id": "jwelflow",
+      "name": "Walsong JwelFlow",
+      "eyebrow": "RETAIL SYSTEMS",
+      "category": "business",
+      "summary": "Detailed workflows for jewelry inventory, pricing, billing and artisan operations.",
+      "status": "Project available",
+      "kind": "project",
+      "image": "jwelflow.svg",
+      "launchUrl": null,
+      "projectUrl": "/projects/jwelflow.html",
+      "note": "Project details are public; a browser-based service is not confirmed."
+    },
+    {
+      "id": "nepalkhata",
+      "name": "NepalKhata",
+      "eyebrow": "LOCAL BUSINESS",
+      "category": "business",
+      "summary": "Inventory and invoicing built for the practical needs of Nepal's retail shops.",
+      "status": "Desktop project",
+      "kind": "project",
+      "image": "nepalkhata.svg",
+      "launchUrl": null,
+      "projectUrl": "/projects/nepalkhata.html",
+      "note": "Desktop software, not a hosted web application."
+    },
+    {
+      "id": "documind",
+      "name": "DocuMind",
+      "eyebrow": "DEVELOPER TOOLS",
+      "category": "developer",
+      "summary": "An experimental retrieval-based document question-answering API with source attribution.",
+      "status": "API prototype",
+      "kind": "project",
+      "image": "documind.svg",
+      "launchUrl": null,
+      "projectUrl": "/projects/documind.html",
+      "note": "Developer prototype; no public hosted web app is confirmed."
+    }
+  ]
+}
