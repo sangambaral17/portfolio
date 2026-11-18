@@ -36,7 +36,8 @@ real directory routes compatible with GitHub Pages. Existing project URLs remain
 available, with backlinks leading to the professional collection.
 
 `/apps/` is the curated app directory, generated from `content/apps.json` and
-`templates/apps.html`. It distinguishes verified live apps (which may still
+`templates/apps.html`. Each entry has a permanent `/apps/<slug>/` page with verified launch status.
+It distinguishes verified live apps (which may still
 require an account) from projects that are not available as hosted services.
 Keep individual applications deployed independently; GitHub Pages is a static
 portfolio host, not a reverse proxy for Next.js apps. `assets/apps.js`
