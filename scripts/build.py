@@ -170,12 +170,11 @@ def app_cards():
     for p in APPS:
         featured = ' is-featured' if p['kind'] == 'live' else ''
         launch = (f'<a class="app-launch" href="{esc(p["launchUrl"])}" target="_blank" rel="noopener noreferrer">Open app <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>' if p['launchUrl'] else '')
-        about = 'About the build' if p['launchUrl'] else 'Explore project'
         cards.append(f'''<article class="app-tile{featured}" data-app-category="{esc(p['category'])}">
 <div class="app-tile-visual"><img src="/assets/{esc(p['image'])}" width="1000" height="650" alt="Original concept illustration for {esc(p['name'])}; not a product screenshot." loading="lazy"></div>
 <div class="app-tile-copy"><div class="app-tile-top"><span class="eyebrow">{esc(p['eyebrow'])}</span><span class="app-status">{esc(p['status'])}</span></div>
 <h3>{esc(p['name'])}</h3><p class="app-tile-summary">{esc(p['summary'])}</p><p class="app-tile-note">{esc(p['note'])}</p>
-<div class="app-tile-actions">{launch}<a href="{esc(p['projectUrl'])}">{about} <span aria-hidden="true">↗</span></a></div></div></article>''')
+<div class="app-tile-actions">{launch}<a href="/apps/{esc(p['id'])}/">View details <span aria-hidden="true">↗</span></a></div></div></article>''')
     return '\n'.join(cards)
 
 
@@ -213,6 +212,13 @@ def build():
     template = (ROOT / 'templates/apps.html').read_text(encoding='utf-8')
     apps_page = render(template, {'HEAD': head('Apps & Tools — Sangam Baral', 'Explore Walsong Fit and an evolving collection of thoughtfully built apps, experiments and products by Sangam Baral.', '/apps/'), 'HEADER': header('apps'), 'FOOTER': footer(), 'APP_CARDS': app_cards()})
     (ROOT / 'apps/index.html').write_text(apps_page, encoding='utf-8')
+    template = (ROOT / 'templates/app.html').read_text(encoding='utf-8')
+    for app in APPS:
+        slug = app['id']
+        (ROOT / 'apps' / slug).mkdir(parents=True, exist_ok=True)
+        launch_action = (f'<a class="button button-dark" href="{esc(app["launchUrl"])}" target="_blank" rel="noopener noreferrer">Open application <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>' if app['launchUrl'] else '')
+        values = {'HEAD': head(f'{app["name"]} — Apps — Sangam Baral', app['summary'], f'/apps/{slug}/'), 'HEADER': header('apps'), 'FOOTER': footer(), 'ID': esc(slug), 'EYEBROW': esc(app['eyebrow']), 'NAME': esc(app['name']), 'STATUS': esc(app['status']), 'SUMMARY': esc(app['summary']), 'NOTE': esc(app['note']), 'IMAGE': esc(app['image']), 'PROJECT_URL': esc(app['projectUrl']), 'LAUNCH_ACTION': launch_action}
+        (ROOT / 'apps' / slug / 'index.html').write_text(render(template, values), encoding='utf-8')
     template = (ROOT / 'templates/project.html').read_text(encoding='utf-8')
     for i, p in enumerate(PROJECTS):
         s = STORIES[p['id']]
@@ -221,7 +227,7 @@ def build():
         next_project = PROJECTS[(i+1) % len(PROJECTS)]
         values.update({'HEAD': head(f'{p["name"]} — Sangam Baral', p['summary'], f'/projects/{p["id"]}.html'), 'HEADER': header(), 'FOOTER': footer(), 'ID': p['id'], 'NAME': esc(p['name']), 'CATEGORY': esc(p['category']), 'STATUS': esc(p['status']), 'STACK': ' / '.join(esc(t) for t in p['stack']), 'SOURCE_ACTION': source_action, 'ILLUSTRATION_ALT': esc(f'Original concept illustration for {p["name"]}; no real customer or internal records.'), 'DETAILS': ''.join(f'<li>{esc(t)}</li>' for t in s['details']), 'NEXT_ID': next_project['id'], 'NEXT_NAME': esc(next_project['name'])})
         (ROOT / f'projects/{p["id"]}.html').write_text(render(template, values), encoding='utf-8')
-    urls = [BASE + '/', BASE + '/professional/', BASE + '/personal/', BASE + '/apps/'] + [f'{BASE}/projects/{p["id"]}.html' for p in PROJECTS]
+    urls = [BASE + '/', BASE + '/professional/', BASE + '/personal/', BASE + '/apps/'] + [f'{BASE}/apps/{app["id"]}/' for app in APPS] + [f'{BASE}/projects/{p["id"]}.html' for p in PROJECTS]
     sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + '\n'.join(f'  <url><loc>{url}</loc><lastmod>2026-11-18</lastmod></url>' for url in urls) + '\n</urlset>\n'
     (ROOT / 'sitemap.xml').write_text(sitemap, encoding='utf-8')
     print(f'Built overview, professional, personal and apps routes, {len(PROJECTS)} project pages and sitemap.')
