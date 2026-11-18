@@ -69,8 +69,8 @@ for project in projects:
         assert not project['sourceUrl'] and not project['demoUrl'], 'Private project has an unreviewed public destination'
 assert (ROOT / 'CNAME').read_text().strip() == 'sangambaral.com.np', 'Custom domain changed'
 
-paths = [ROOT / 'index.html', ROOT / 'professional/index.html', ROOT / 'personal/index.html', ROOT / 'apps/index.html'] + sorted((ROOT / 'projects').glob('*.html'))
-assert len(paths) == 11, 'Expected four top-level routes and seven stories'
+paths = [ROOT / 'index.html', ROOT / 'professional/index.html', ROOT / 'personal/index.html', ROOT / 'apps/index.html'] + sorted((ROOT / 'apps').glob('*/index.html')) + sorted((ROOT / 'projects').glob('*.html'))
+assert len(paths) == 17, 'Expected four top-level routes, six app details and seven stories'
 pages = {}
 for path in paths:
     source = path.read_text(encoding='utf-8')
@@ -79,7 +79,7 @@ for path in paths:
     pages[path.resolve()] = page
     if page.h1 != 1 or not all([page.title, page.description, page.canonical, page.og]):
         errors.append(f'{page.path}: incomplete headings or discovery metadata')
-    expected_route = '/' if path == ROOT / 'index.html' else '/personal/' if path == ROOT / 'personal/index.html' else '/apps/' if path == ROOT / 'apps/index.html' else '/professional/'
+    expected_route = '/' if path == ROOT / 'index.html' else '/personal/' if path == ROOT / 'personal/index.html' else '/apps/' if path.is_relative_to(ROOT / 'apps') else '/professional/'
     if page.active_routes != [expected_route]:
         errors.append(f'{page.path}: wrong current navigation route')
     if path.parent.name == 'projects' and 'href="/professional/#work"' not in source:
